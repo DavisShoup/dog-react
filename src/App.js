@@ -1,25 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState, useEffect } from "react"
+import Form from './components/Form';
+import ShowDogImage from './components/ShowDogImage';
 
 function App() {
+
+  const [randomDogPic, setRandomDogPic] = useState("dog");
+
+  const getRandomDogPic = async () => {
+  const response = await fetch(
+    "https://dog.ceo/api/breeds/image/random"
+  )
+  const data = await response.json();
+  setRandomDogPic(data);
+  };
+
+  const randomURL = "https://dog.ceo/api/breeds/image/random"
+
+  useEffect(() => {
+    getRandomDogPic()}, []);
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Form getRandomDogPic={getRandomDogPic}/>
+      <ShowDogImage randomDogPic={randomDogPic}/>
     </div>
   );
-}
+};
 
 export default App;
